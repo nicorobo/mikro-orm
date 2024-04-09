@@ -191,6 +191,10 @@ const processedMetadataProcessor: GenerateOptions['onProcessedMetadata'] = (meta
       const authorInversed = entity.properties.authorInverse;
       authorInversed.orphanRemoval = true;
       entity.properties.secondsSinceLastModified.ref = false;
+
+      const optionalProp = entity.properties.optional;
+      expect(optionalProp.type).toBe('boolean');
+      optionalProp.type = 'CustomBooleanType';
     }
   });
 };

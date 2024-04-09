@@ -25,6 +25,8 @@ import { POSSIBLE_TYPE_IMPORTS } from './CoreImportsHelper';
  */
 export const identifierRegex = /^(?:[$_\p{ID_Start}])(?:[$\u200C\u200D\p{ID_Continue}])*$/u;
 
+const primitivesAndLibs = ['unknown', 'boolean', 'number', 'bigint', 'string', 'Date', 'Buffer', 'object', 'any'];
+
 export class SourceFile {
 
   protected readonly coreImports = new Set<string>();
@@ -209,7 +211,13 @@ export class SourceFile {
           const runtimeTypes = prop.columnTypes.map(t => this.platform.getMappedType(t).runtimeType);
           return runtimeTypes.length === 1 ? runtimeTypes[0] : this.serializeObject(runtimeTypes);
         })()
-      : prop.type;
+      : (() => {
+          const normalizedPropType = prop.type.replace(/\[]$/, '');
+          if (!primitivesAndLibs.includes(normalizedPropType) && !prop.enum) {
+            this.entityImports.add(normalizedPropType);
+          }
+          return prop.type;
+        })();
 
     const useDefault = prop.default != null;
     const optional = prop.nullable ? '?' : (useDefault ? '' : '!');
@@ -575,7 +583,6 @@ export class SourceFile {
   }
 
   protected getEmbeddedPropertyDeclarationOptions(options: Dictionary, prop: EntityProperty) {
-    this.coreImports.add('Embedded');
     this.entityImports.add(prop.type);
     options.entity = `() => ${prop.type}`;
 

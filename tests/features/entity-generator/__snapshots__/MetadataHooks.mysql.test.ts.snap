@@ -20,6 +20,7 @@ export class Address2 {
 ",
   "import { Cascade, Collection, EagerProps, Embedded, Entity, Formula, type Hidden, Index, ManyToMany, ManyToOne, OneToMany, type Opt, PrimaryKey, Property, Unique } from '@mikro-orm/core';
 import { Book2 } from './Book2';
+import { CustomBooleanType } from './CustomBooleanType';
 import { IdentitiesContainer } from './IdentitiesContainer';
 
 @Entity({ readonly: true })
@@ -54,8 +55,8 @@ export class Author2 {
   @Property({ type: 'boolean', lazy: true })
   termsAccepted: boolean & Opt = false;
 
-  @Property({ nullable: true })
-  optional?: boolean;
+  @Property({ columnType: 'tinyint(1)', nullable: true })
+  optional?: CustomBooleanType;
 
   @Property({ columnType: 'text', nullable: true })
   identities?: string;
@@ -691,8 +692,9 @@ export const Address2Schema = new EntitySchema({
   },
 });
 ",
-  "import { Cascade, Collection, EagerProps, Embedded, EntitySchema, type Hidden, type Opt } from '@mikro-orm/core';
+  "import { Cascade, Collection, EagerProps, EntitySchema, type Hidden, type Opt } from '@mikro-orm/core';
 import { Book2 } from './Book2';
+import { CustomBooleanType } from './CustomBooleanType';
 import { IdentitiesContainer } from './IdentitiesContainer';
 
 export class Author2 {
@@ -704,7 +706,7 @@ export class Author2 {
   email!: string & Hidden;
   age?: number;
   termsAccepted: boolean & Opt = false;
-  optional?: boolean;
+  optional?: CustomBooleanType;
   identities?: string;
   born?: string;
   bornTime?: string;
@@ -747,7 +749,7 @@ export const Author2Schema = new EntitySchema({
     },
     age: { type: 'number', nullable: true, concurrencyCheck: true },
     termsAccepted: { type: 'boolean', lazy: true, index: 'author2_terms_accepted_index' },
-    optional: { type: 'boolean', nullable: true },
+    optional: { type: 'CustomBooleanType', columnType: 'tinyint(1)', nullable: true },
     identities: { type: 'string', columnType: 'text', nullable: true },
     born: {
       type: 'string',
@@ -1482,6 +1484,7 @@ export class Address2 {
 ",
   "import { Cascade, Collection, EagerProps, Embedded, Entity, Formula, type Hidden, Index, ManyToMany, ManyToOne, OneToMany, type Opt, PrimaryKey, Property, type Ref, Unique } from '@mikro-orm/core';
 import { Book2 } from './Book2';
+import { CustomBooleanType } from './CustomBooleanType';
 import { IdentitiesContainer } from './IdentitiesContainer';
 
 @Entity({ readonly: true })
@@ -1516,8 +1519,8 @@ export class Author2 {
   @Property({ type: 'boolean', lazy: true, default: false })
   termsAccepted: Ref<boolean>;
 
-  @Property({ nullable: true })
-  optional?: boolean;
+  @Property({ columnType: 'tinyint(1)', nullable: true })
+  optional?: CustomBooleanType;
 
   @Property({ columnType: 'text', nullable: true })
   identities?: string;
@@ -2154,8 +2157,9 @@ export const Address2Schema = new EntitySchema({
   },
 });
 ",
-  "import { Cascade, Collection, EagerProps, Embedded, EntitySchema, type Hidden, type Opt, type Ref } from '@mikro-orm/core';
+  "import { Cascade, Collection, EagerProps, EntitySchema, type Hidden, type Opt, type Ref } from '@mikro-orm/core';
 import { Book2 } from './Book2';
+import { CustomBooleanType } from './CustomBooleanType';
 import { IdentitiesContainer } from './IdentitiesContainer';
 
 export class Author2 {
@@ -2167,7 +2171,7 @@ export class Author2 {
   email!: string & Hidden;
   age?: number;
   termsAccepted: Ref<boolean>;
-  optional?: boolean;
+  optional?: CustomBooleanType;
   identities?: string;
   born?: string;
   bornTime?: string;
@@ -2215,7 +2219,7 @@ export const Author2Schema = new EntitySchema({
       default: false,
       index: 'author2_terms_accepted_index',
     },
-    optional: { type: 'boolean', nullable: true },
+    optional: { type: 'CustomBooleanType', columnType: 'tinyint(1)', nullable: true },
     identities: { type: 'string', columnType: 'text', nullable: true },
     born: {
       type: 'string',
